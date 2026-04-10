@@ -2,6 +2,4 @@
 transcriptomics/tcell_exp/*
 
 # But don't ignore these specific folders
-!transcriptomics/tcell_exp/scripts/
-!transcriptomics/tcell_exp/results/
-!transcriptomics/tcell_exp/figures/
+!/figures/
