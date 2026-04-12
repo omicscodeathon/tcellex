@@ -2,7 +2,9 @@
 
   TABLE OF CONTENTS
   
-[BACKGROUND](#BACKGROUND)                                                                   [PROJECT OVERVIEW](#PROJECT_OVERVIEW)
+[BACKGROUND](#BACKGROUND)                                                                   
+
+[PROJECT OVERVIEW](#PROJECT_OVERVIEW)
 
 [OBJECTIVES](#OBJECTIVES)
 
