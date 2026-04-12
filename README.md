@@ -74,7 +74,7 @@ LUSc samples to delineate the molecular boundaries between these two histologies
 
 All the scripts(python) for the T-cell project are available in the repository:
 
-👉 Browse the scripts: [View scripts]
+👉 Browse the scripts: [View scripts](scripts)
 
   T-CELL LINEAGE USED:
 
