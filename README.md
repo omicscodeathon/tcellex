@@ -2,9 +2,7 @@
 
   TABLE OF CONTENTS
   
-[BACKGROUND](#BACKGROUND)
-
-[PROJECT OVERVIEW](#PROJECT_OVERVIEW)
+[BACKGROUND](#BACKGROUND)                                                                   [PROJECT OVERVIEW](#PROJECT_OVERVIEW)
 
 [OBJECTIVES](#OBJECTIVES)
 
@@ -30,13 +28,13 @@
 
 [ACKNOWLEDMENTS](#ACKNOWLEDGEMENT) 
 
-                     
-                           omics codeathon general application 2026
-          organized by the African Society for Bioinformatics and Computational Biology(ASBCB) with support from the NIH office of Data Science Strategy.
-
-   BACKGROUND
 
    
+                            omics codeathon general application 2026
+        organized by the African Society for Bioinformatics and Computational Biology(ASBCB) with support from the NIH office of Data Science Strategy.
+   
+BACKGROUND
+
 Non-Small Cell lung cancer(NSCLC) is primarily categorized into two histological subtypes the Lung Adenocarcinoma(LUAD)
 
 and Lung Squamous Cell Carcinoma(LUSC). While they share a common organ of origin their immunological landscapes are vastly
