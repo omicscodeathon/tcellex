@@ -1,6 +1,7 @@
-##T-CELL EXPRESSION ANALYSIS IN LUNG CANCER: A LUAD VS LUSC STUDY
+  T-CELL EXPRESSION ANALYSIS IN LUNG CANCER: A LUAD VS LUSC STUDY
 
-##TABLE OF CONTENTS
+  TABLE OF CONTENTS
+  
 [BACKGROUND](#BACKGROUND)
 
 [PROJECT OVERVIEW](#PROJECT OVERVIEW)
@@ -29,7 +30,7 @@
 
 [ACKNOWLEDMENTS](#ACKNOWLEDGEMENT)
 
-##BACKGROUND
+   BACKGROUND
 Non-Small Cell lung cancer(NSCLC) is primarily categorized into two histological subtypes the Lung Adenocarcinoma(LUAD)
 
 and Lung Squamous Cell Carcinoma(LUSC). While they share a common organ of origin their immunological landscapes are vastly
@@ -38,7 +39,7 @@ different. Understanding the histological drivers of T-cell exclusion is critica
 
  and understanding why certain tumors present as immune deserts.
 
-##PROJECT OVERVIEW
+  PROJECT OVERVIEW
 
 This project performs a comparative transcriptomic analysis of 16 high-throughput datasets from The Cancer Genome Atlas(TCGA)
 
@@ -46,7 +47,7 @@ The study characterizes the T-cell marker expression , immune cell abundance and
 
 LUSc samples to delineate the molecular boundaries between these two histologies.
 
-##OBJECTIVES
+  OBJECTIVES
 
 - Perform intra-group and global audits of LUAD and LUSc transcriptomic data.
 
@@ -59,21 +60,21 @@ LUSc samples to delineate the molecular boundaries between these two histologies
 - Map funtional biological pathways unique to the LUAD and LUSC microenvironments.
 
 
-##WORKFLOW
+  WORKFLOW
 
-![RNAseq Workflow](figures/WORKFLOW.png)
+![RNAseq Workflow](figures/WORKFLOW2.png)
 
-##PIPELINE ARCHITECTURE
+  PIPELINE ARCHITECTURE
 
 ![PIPELINE](figures/PIPELINE.png)
 
-##CODE AVAILABILITY
+  CODE AVAILABILITY
 
 All the scripts(python) for the T-cell project are available in the repository:
 
 👉 Browse the scripts: [View scripts]
 
-##T-CELL LINEAGE USED:
+  T-CELL LINEAGE USED:
 
 - Core T-cell populations:
 
@@ -97,7 +98,7 @@ i) Natural Killer(NK) cells
 
 ii) Macrophages
 
-##KEY FINDINGS AND KEY TAKEAWAYS
+   KEY FINDINGS AND KEY TAKEAWAYS
 
 - Histological distinction:
 
@@ -123,7 +124,7 @@ ii) Macrophages
 
  LUAD is significantly enriched in pathways related to antigen processing and apoptopic cell clearance. [View LUAD Pathways](figures/pathways_LUAD_High_manual.png)
 
-##REPOSITORY STRUCTURE
+  REPOSITORY STRUCTURE
 
 - Data - raw and audited count matrices(LUAD/LUSC)
 
@@ -141,7 +142,7 @@ ii) Macrophages
 
 - license - MIT license
 
-##TOOLS & SOFTWARE
+  TOOLS & SOFTWARE
 
 Language: Python 3.10+
 
@@ -153,11 +154,11 @@ Visualization: Matplotlib, Seaborn, Bioinfokit
 
 APIs: MyGene.info
 
-##LICENSE
+   LICENSE
 
 License : License: MIT
 
-##CONTRIBUTORS
+  CONTRIBUTORS
 
 1. Mbaoji Florence Nwakaego
   Department of Pharmacology and Toxicology,
@@ -197,7 +198,7 @@ License : License: MIT
    African Society for Bioinformatics and Computational Biology (ASBCB), Cape Town, South Africa
   Project Advisor
   
-##ACKNOWLEDGEMENTS
+  ACKNOWLEDGEMENTS
 
 We thank the NIH Office of Data Science Strategy for their support before and during the October 2026 Omics Codeathon, co-organized with the African Society for Bioinformatics and Com>
 We also thank Dr. Awe for his ongoing guidance and all collaborators who contributed to this project.
