@@ -28,7 +28,12 @@
 
 [CONTRIBUTORS](#CONTRIBUTORS)
 
-[ACKNOWLEDMENTS](#ACKNOWLEDGEMENT)
+[ACKNOWLEDMENTS](#ACKNOWLEDGEMENT) 
+
+
+                     Omics Codeathon General Application - October 2026
+Organized by the African Society for Bioinformatics and Computational Biology (ASBCB) with support from the NIH Office of Data Science Strategy.
+
 
    BACKGROUND
 
