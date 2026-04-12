@@ -1,120 +1,164 @@
-     T-CELL EXPRESSION ANALYSIS IN LUNG CANCER: A LUAD vs. LUSC Study
+##T-CELL EXPRESSION ANALYSIS IN LUNG CANCER: A LUAD VS LUSC STUDY
 
-       Background
-Non-Small Cell Lung Cancer (NSCLC) is primarily categorized into two histological subtypes:
+##TABLE OF CONTENTS
+[BACKGROUND](#BACKGROUND)
 
-Lung Adenocarcinoma (LUAD) and Lung Squamous Cell Carcinoma (LUSC). While they share a common organ of origin, 
+[PROJECT OVERVIEW](#PROJECT OVERVIEW)
 
-their immunological landscapes are vastly different. Understanding the histological drivers of T-cell exclusion 
+[OBJECTIVES](#OBJECTIVES)
 
-is critical for optimizing subtype-specific immunotherapy and understanding why certain tumors present as "immune deserts."
+[WORKFLOW](#WORKFLOW)
 
-            Project Overview
-This project performs a comparative transcriptomic analysis of 16 high-throughput datasets from The Cancer Genome Atlas (TCGA).
-The study characterizes the T-cell marker expression, immune cell abundance, and biological pathways of 8 LUAD samples versus 8 LUSC
-samples to delineate the molecular boundaries between these two histologies.
+[PIPELINE ARCHITECTURE](#PIPELINE ARCHITECTURE)
 
-    Objectives
+[CODE AVAILABILITY](#CODE AVAILABILITY)
 
-* Perform intra-group and global audits of LUAD and LUSC transcriptomic data.
+[T-CELL LINEAGE USED](#T-CELL LINEAGE USED)
 
-* Standardize genetic features across histology-specific cohorts.
+[T-CELL LINEAGE USED](#T-CELL LINEAGE USED)
 
-* Quantify and compare T-cell infiltration and deconvolution scores between subtypes.
+[KEY FINDINGS AND KEY TAKEAWAYS](#KEY FINDINGS AND KEY TAKEAWAYS)
 
-* Identify histological drivers of immune activity via Differential Gene Expression (DGE).
+[REPOSITORY STRUCTURE](#REPOSITORY STRUCTURE)
 
-* Map functional biological pathways unique to the LUAD and LUSC microenvironments.
+[TOOLS & SOFTWARE](#TOOLS & SOFTWARE)
 
-     Workflow 
+[LICENSE](#LICENSE)
+
+[CONTRIBUTORS](#CONTRIBUTORS)
+
+[ACKNOWLEDMENTS](#ACKNOWLEDGEMENT)
+
+##BACKGROUND
+Non-Small Cell lung cancer(NSCLC) is primarily categorized into two histological subtypes the Lung Adenocarcinoma(LUAD)
+
+and Lung Squamous Cell Carcinoma(LUSC). While they share a common organ of origin their immunological landscapes are vastly
+
+different. Understanding the histological drivers of T-cell exclusion is critical for optimizing subtype specific immunotherapy
+
+ and understanding why certain tumors present as immune deserts.
+
+##PROJECT OVERVIEW
+
+This project performs a comparative transcriptomic analysis of 16 high-throughput datasets from The Cancer Genome Atlas(TCGA)
+
+The study characterizes the T-cell marker expression , immune cell abundance and biological pathways of the 8 LUAD samples versus 8
+
+LUSc samples to delineate the molecular boundaries between these two histologies.
+
+##OBJECTIVES
+
+- Perform intra-group and global audits of LUAD and LUSc transcriptomic data.
+
+- Standardize genetic features across histology-specific cohorts.
+
+- Quantify and compare t-cell infiltration and deconvolution scores between subtypes.
+
+- Identify histological drivers of immune activity via Differential Gene Expression(DGE).
+
+- Map funtional biological pathways unique to the LUAD and LUSC microenvironments.
+
+
+##WORKFLOW
 
 ![RNAseq Workflow](figures/WORKFLOW.png)
 
-     Pipeline
+##PIPELINE ARCHITECTURE
 
-1. Data Acquisition & Selection:
+![PIPELINE](figures/PIPELINE.png)
 
-    Systematically filtering the TCGA-LUAD and TCGA-LUSC cohorts on the GDC Data Portal to select 16 primary tumor (TP) samples and generating the `accessions.txt` manifest.
+##CODE AVAILABILITY
 
-2. Intra-Group Integration:
+All the scripts(python) for the T-cell project are available in the repository:
 
-    Independent merging of the 8 LUAD and 8 LUSC files into subtype-specific matrices to establish histological baselines.
+👉 Browse the scripts: [View scripts]
 
-3. Quality Audit & Preprocessing:
+##T-CELL LINEAGE USED:
 
-      Scanning for null values (NaNs), removing zero-count genes, and cleaning Ensembl Gene IDs by stripping version decimal suffixes (e.g., `.15`).
+- Core T-cell populations:
 
-4. Global Combination & Normalization:
+i) CD8+ Cytotoxic T-cells(CD8A, CD8B)
 
-      Integrating subtype matrices via an inner join followed by a global **Log2(CPM + 1)** transformation to ensure cross-subtype comparability.
+ii) CD4+ helper T-cells(CD4 marker)
 
-5. Exploratory QC Visualization:
+iii) Regulatory T-cells(Tregs)
 
-    Validating biological clustering and data consistency through **Principal Component Analysis (PCA)** and expression distribution boxplots.
+- General lymphocyte markers: 
 
-6. Feature Mapping & Immune Profiling: 
+  i)CD3 complex(CD3D, CD3E), identified T-cell presence regardless of their specific subtype
 
-    Utilizing the MyGene.info API to convert Ensembl IDs to Gene Symbols and extracting a canonical 10-gene T-cell signature for infiltration scoring.
+- Functional effector cells:
 
-7. Differential Gene Expression (DGE):
+i) Activated cytotoxic lymphocytes(GZMB, PRF1)
 
-    Performing a formal statistical comparison of LUAD vs. LUSC using the **PyDESeq2** generalized linear model.
+- Comparative non-T cell markers(identified through deconvolution):
 
-8. Functional Discovery & Visualization: 
+i) Natural Killer(NK) cells
 
-    Executing pathway enrichment analysis (KEGG/GO) via **GSEApy Enrichr** and generating high-resolution **Volcano Plots**.
+ii) Macrophages
 
-     Key Findings & Takeaways
-         
-* Histological Distinction:
+##KEY FINDINGS AND KEY TAKEAWAYS
 
- PCA confirms that LUAD and LUSC possess distinct global transcriptomic fingerprints despite shared organ origin. [View PCA Plot](figures/pca_16_samples.png)
+- Histological distinction:
 
-* Immune Architecture:
+ PCA confirms that LUAD and LUSc possess distinct global transcriptomic fingerprints despite shared organ origin. [view PCA plot](figures/pca_16_samples.png)
 
- LUAD exhibits a more consistent immune-active microenvironment characterized by higher median T-cell infiltration scores. [View Subtype Comparison](figures/tcell_subtype_comparison_boxplot.png)
+- Immune Architecture
 
-* T-Cell Signaling:
+  LUAD exhibits a more consistent immune-active microenvironment characterized by higher median T-cell infilration scores. [View subtype Comparison](figures/tcell_subtype_comparison_boxplot.png)
 
- Critical cytotoxic markers (CD8A, GZMB) show significant histological preference, revealing the "hot" vs "cold" nature of these tumors. [View Volcano Plot](figures/volcano_luad_vs_lusc.png)
+- T-cell Signaling:
 
-* Proliferative Tradeoff:
+ Critical cytotoxic markers(CD8A, GZMB) show significant histological preference revealing the "hot" vs "cold" nature of these tumors. [View Volcano Plot](figures/volcano_luad_vs_lusc.png)
+
+- Proliferative Tradeoff:
 
  LUSC demonstrates a hyper-proliferative signature (mitotic spindle organization) which correlates with a "colder" or more excluded immune profile. [View LUSC Pathways](figures/pathways_LUSC_High_manual.png)
 
-* Cellular Composition:
+- Cellular composition:
 
-  Digital deconvolution reveals a higher abundance of cytotoxic lymphocytes in LUAD, while Macrophages remain a stable component in both histologies. [View Deconvolution Heatmap](figures/deconvolution_heatmap.png)
+ Digital deconvolution reveals a higher abundance of cytotoxic lymphocytes in LUAD while Macrophages remain a stable component in both histologies. [View Deconvolution Heatmap](figures/deconvolution_heatmap.png)
 
-* Functional Mechanism:
+- Functional Mechanism:
 
-   LUAD is significantly enriched in pathways related to antigen processing and apoptotic cell clearance. [View LUAD Pathways](figures/pathways_LUAD_High_manual.png)
+ LUAD is significantly enriched in pathways related to antigen processing and apoptopic cell clearance. [View LUAD Pathways](figures/pathways_LUAD_High_manual.png)
 
+##REPOSITORY STRUCTURE
 
-      Repository Structure
+- Data - raw and audited count matrices(LUAD/LUSC)
 
-.
-├── data/               # Raw and audited count matrices (LUAD/LUSC)
-├── scripts/            # Python scripts for auditing, DGE, and plotting
-├── results/            # Statistical output tables (DEGs, enrichment scores)
-├── figures/            # Generated QC plots, heatmaps, and volcano plots
-├── accessions.txt      # List of TCGA Case IDs and File UUIDs
-├── README.md           # General project documentation
-├── .gitignore          # Files to exclude from version control
-└── LICENSE             # MIT License
+- Scripts - python scripts for auditing, DGE and plotting
 
-     Tools & Software
+- Results - statistical output tables(DEGs, enrichment scores)
+
+- Figures - generated QC plots, heatmaps and volcano plots
+
+- accessions/ accessions.txt - list of TCGA case IDs and file UUIDs
+
+- README.md - general project documentation
+
+- .gitignore - files to exclude from version control
+
+- license - MIT license
+
+##TOOLS & SOFTWARE
+
 Language: Python 3.10+
 
-Statistics: PyDESeq2, GSEApy
+Statistics: PyDeseq2, GSEApy
 
-Data Handling: Pandas, NumPy
+Data handling: Pandas, Numpy
 
 Visualization: Matplotlib, Seaborn, Bioinfokit
 
 APIs: MyGene.info
 
-CONTRIBUTORS
+##LICENSE
+
+License : License: MIT
+
+##CONTRIBUTORS
+
 1. Mbaoji Florence Nwakaego
   Department of Pharmacology and Toxicology,
   Faculty of Pharmaceutical Sciences,
@@ -136,6 +180,7 @@ CONTRIBUTORS
   Department of Morphological Veterinary Medicine, Chungbuk National University, South Korea.
   Department of Human Biochemistry, Faculty of Basic Medical Sciences,
   Nnamdi Azikiwe University, Nnewi, Nigeria.
+
 6. Zilungile Coki
    SSc(HONS) Biotechnology student,
    University of the Western Cape, South Africa
@@ -152,7 +197,8 @@ CONTRIBUTORS
    African Society for Bioinformatics and Computational Biology (ASBCB), Cape Town, South Africa
   Project Advisor
   
- ACKNOWLEDGEMENTS
+##ACKNOWLEDGEMENTS
+
 We thank the NIH Office of Data Science Strategy for their support before and during the October 2026 Omics Codeathon, co-organized with the African Society for Bioinformatics and Com>
 We also thank Dr. Awe for his ongoing guidance and all collaborators who contributed to this project.
 
