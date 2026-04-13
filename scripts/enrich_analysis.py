@@ -7,23 +7,23 @@ import gseapy as gp
 import mygene
 import os
 
-# 1. LOAD DATA
+#LOAD DATA
 results_csv = 'transcriptomics/tcell_exp/results/dge_luad_vs_lusc_full.csv'
 df = pd.read_csv(results_csv, index_col=0)
 
-# 2. CRITICAL: Clean the IDs (ENSG00000002586.15 -> ENSG00000002586)
+#CRITICAL: Clean the IDs (ENSG00000002586.15 -> ENSG00000002586)
 # This is why your previous mapping failed
 df.index = df.index.astype(str).str.split('.').str.get(0)
 df = df[~df.index.str.startswith('N_')] # Remove STAR noise
 
-# 3. MAP TO SYMBOLS
+#MAP TO SYMBOLS
 print("Mapping Cleaned Ensembl IDs to Symbols...")
 mg = mygene.MyGeneInfo()
 map_res = mg.querymany(df.index.tolist(), scopes='ensembl.gene', fields='symbol', species='human')
 mapping = {res['query']: res['symbol'] for res in map_res if 'symbol' in res}
 df['symbol'] = df.index.map(mapping)
 
-# 4. RUN ENRICHMENT
+# RUN ENRICHMENT
 # Using relaxed thresholds (p < 0.05 and LFC > 0.5) to ensure we find pathways
 for group, condition in [("LUSC_High", df.log2FoldChange > 0.5), 
                          ("LUAD_High", df.log2FoldChange < -0.5)]:
