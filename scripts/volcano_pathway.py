@@ -7,20 +7,20 @@ import seaborn as sns
 import gseapy as gp
 import mygene
 
-# 1. LOAD AND CLEAN DGE RESULTS
+#LOAD AND CLEAN DGE RESULTS
 df = pd.read_csv('transcriptomics/tcell_exp/results/dge_luad_vs_lusc_full.csv', index_col=0)
 
 # CRITICAL: Remove STAR summary rows (N_unmapped, etc.)
 df = df[~df.index.str.startswith('N_')]
 
-# 2. MAP ENSG TO SYMBOLS
+#MAP ENSG TO SYMBOLS
 mg = mygene.MyGeneInfo()
 print("Mapping Ensembl IDs to Symbols...")
 map_res = mg.querymany(df.index.tolist(), scopes='ensembl.gene', fields='symbol', species='human')
 mapping = {res['query']: res['symbol'] for res in map_res if 'symbol' in res}
 df['symbol'] = df.index.map(mapping)
 
-# 3. VOLCANO PLOT
+#VOLCANO PLOT
 plt.figure(figsize=(10, 7))
 df['neg_log10_padj'] = -np.log10(df['padj'].fillna(1))
 lusc_mask = (df.pvalue < 0.05) & (df.log2FoldChange > 0.5)
@@ -33,7 +33,7 @@ plt.title("Volcano Plot: LUSC vs LUAD")
 plt.savefig('transcriptomics/tcell_exp/figures/volcano_luad_vs_lusc.png')
 print("Volcano plot saved.")
 
-# 4. PATHWAY ENRICHMENT (Using Only Mapped Symbols)
+#PATHWAY ENRICHMENT (Using Only Mapped Symbols)
 # We use cutoff=1 to force results even if significance is low
 for group, condition in [("LUSC", lusc_mask), ("LUAD", luad_mask)]:
     # ONLY take valid symbols for Enrichr
