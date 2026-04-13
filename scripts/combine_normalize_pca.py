@@ -7,24 +7,24 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 import os
 
-# 1. Load the audited matrices
+#Load the audited matrices
 luad = pd.read_csv('transcriptomics/tcell_exp/results/luad_audited_matrix.csv', index_col=0)
 lusc = pd.read_csv('transcriptomics/tcell_exp/results/lusc_audited_matrix.csv', index_col=0)
 
-# 2. Grand Combination (Inner Join)
+#Grand Combination (Inner Join)
 combined_df = luad.join(lusc, how='inner')
 
 # Strip Ensembl version suffixes correctly
 combined_df.index = combined_df.index.str.split('.').str.get(0)
 
-# 3. Global Normalization: log2(CPM + 1)
+#Global Normalization: log2(CPM + 1)
 cpm = (combined_df / combined_df.sum()) * 1e6
 log_cpm = np.log2(cpm + 1)
 
 # Ensure figures directory exists
 os.makedirs('transcriptomics/tcell_exp/figures', exist_ok=True)
 
-# --- VISUALIZATION 1: BOXPLOT ---
+#VISUALIZATION 1: BOXPLOT 
 plt.figure(figsize=(14, 6))
 melted_df = log_cpm.melt(var_name='Sample', value_name='Expression')
 melted_df['Group'] = melted_df['Sample'].apply(lambda x: 'LUAD' if x in luad.columns else 'LUSC')
@@ -36,9 +36,9 @@ plt.ylabel("log2(CPM + 1)")
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 plt.savefig('transcriptomics/tcell_exp/figures/normalization_boxplot.png')
-plt.close() # Close figure to free memory
+plt.close() 
 
-# --- VISUALIZATION 2: PCA PLOT ---
+# VISUALIZATION 2: PCA PLOT 
 pca = PCA(n_components=2)
 components = pca.fit_transform(log_cpm.T)
 
@@ -58,6 +58,6 @@ plt.tight_layout()
 plt.savefig('transcriptomics/tcell_exp/figures/pca_16_samples.png')
 plt.close()
 
-# 4. Save the final matrix
+#Save the final matrix
 log_cpm.to_csv('transcriptomics/tcell_exp/results/normalized_16_samples.csv')
 print("Grand Merge Complete! Boxplot and PCA saved to transcriptomics/tcell_exp/figures/")
