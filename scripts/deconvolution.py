@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import mygene
 
-# 1. LOAD DATA
+#LOAD DATA
 df = pd.read_csv('transcriptomics/tcell_exp/results/normalized_16_samples.csv', index_col=0)
 
-# 2. MAP ENSG TO SYMBOLS (Required for signature matching)
+#MAP ENSG TO SYMBOLS (Required for signature matching)
 mg = mygene.MyGeneInfo()
 print("Mapping Ensembl IDs to Symbols for Deconvolution...")
 map_res = mg.querymany(df.index.tolist(), scopes='ensembl.gene', fields='symbol', species='human')
@@ -17,7 +17,7 @@ mapping = {res['query']: res['symbol'] for res in map_res if 'symbol' in res}
 df.index = df.index.map(mapping)
 df = df[df.index.notnull()] # Remove genes that didn't map
 
-# 3. DEFINE IMMUNE SIGNATURES
+#DEFINE IMMUNE SIGNATURES
 signatures = {
     'T_cells': ['CD3D', 'CD3E', 'CD2'],
     'CD8_T_cells': ['CD8A', 'CD8B'],
@@ -27,10 +27,10 @@ signatures = {
     'Macrophages': ['CD68', 'CD163']
 }
 
-# 4. CALCULATE SCORES
+#CALCULATE SCORES
 decon_results = {}
 for cell, markers in signatures.items():
-    # Only use markers that actually exist in your data
+
     present_markers = [m for m in markers if m in df.index]
     if present_markers:
         print(f"Found {len(present_markers)} markers for {cell}")
@@ -44,7 +44,7 @@ if not decon_results:
 
 decon_df = pd.DataFrame(decon_results).T
 
-# 5. PLOT HEATMAP
+#PLOT HEATMAP
 plt.figure(figsize=(12, 8))
 sns.heatmap(decon_df, annot=True, cmap="YlGnBu", fmt=".2f")
 plt.title("Immune Cell Deconvolution: LUAD vs LUSC")
