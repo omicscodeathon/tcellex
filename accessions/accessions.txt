@@ -1,9 +1,19 @@
 Datasets used were downloaded to the directory and using the links below
-mkdir -p transcriptomics/tcell_exp/data
+mkdir -p transcriptomics/tcell_exp/data/{luad,lusc}
      TCGA FILES
 LUSC FILES
 
+https://api.gdc.cancer.gov/data/0139ef5f-7adc-4e84-90c1-42ebf59aaf98
+https://api.gdc.cancer.gov/data/a4c0b47f-515a-4578-a6d3-fbf447c5f107
+https://api.gdc.cancer.gov/data/6b4f8e00-03a3-4f9f-b1ef-435b0417d665
+https://api.gdc.cancer.gov/data/b0a121e1-c084-43e0-89b6-0cf037d5aba1
+https://api.gdc.cancer.gov/data/7701440f-17b4-47da-a070-d11afd94e9ae
+https://api.gdc.cancer.gov/data/c15bee9b-18e0-433d-8216-32193639733c
+https://api.gdc.cancer.gov/data/947d262c-5ccf-413a-868f-16ed7005a46b
+https://api.gdc.cancer.gov/data/e2a7e12b-a940-4031-ad7f-a02cbb2a338f
+
 LUAD FILES
+
 https://portal.gdc.cancer.gov/files/32dd8db9-1e43-497e-a35a-664d7d15ed60
 https://portal.gdc.cancer.gov/files/525e9185-ed15-403d-8987-93c50e4b89a1
 https://portal.gdc.cancer.gov/files/a6a841ae-f63f-45ab-9a17-2288e12a9577
