@@ -198,7 +198,11 @@ License : License: MIT
    department of cell biology and genetics,
    university of Lagos, Akoka
 
-9. Olaitan I. Awe
+9. Eva Akurut
+    Department of Immunology and Molecular Biology, College of Health Sciences, Makerere University, Kampala, Uganda.
+    The African Centre of Excellence in Bioinformatics and Data-Intensive Sciences, Infectious Diseases Institute, Makerere University, Kampala, Uganda.
+
+10. Olaitan I. Awe
    African Society for Bioinformatics and Computational Biology (ASBCB), Cape Town, South Africa
   Project Advisor
   
