@@ -140,6 +140,8 @@ ii) Macrophages
 
 - accessions/ accessions.txt - list of TCGA case IDs and file UUIDs
 
+-validation/{data,scripts,results,figures}- directory with single-cell information used in validation 
+
 - README.md - general project documentation
 
 - .gitignore - files to exclude from version control
