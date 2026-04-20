@@ -1,5 +1,20 @@
-# Ignore everything in this specific directory
-transcriptomics/tcell_exp/*
+# =========================
+# LARGE / RAW DATA
+# =========================
+data/*
+validation/data/*
 
-# But don't ignore these specific folders
-!/figures/
+# Keep only README files
+!data/README.md
+!validation/data/README.md
+
+# =========================
+# LOG FILES
+# =========================
+logs/
+
+# =========================
+# PYTHON CACHE FILES
+# =========================
+__pycache__/
+*.pyc
