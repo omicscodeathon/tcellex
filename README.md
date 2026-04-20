@@ -1,4 +1,4 @@
- COMPARATIVE TRANSCRIPTOMIC PROFILING OF T-CELL INFILTRATION IN LUNG CANCER: A HISTOLOGICAL T-CELL EXPRESSION ANALYSIS OF LUAD VERSUS LUSC
+COMPARATIVE TRANSCRIPTOMIC ANALYSIS OF NON-SMALL CELL LUNG CANCER LUAD AND LUSC : INTEGRATING BULK AND SINGLE-CELL RNA SEQUENCING TO MAP HISTOLOGICAL IMMUNE ARCHITECTURES
 
   TABLE OF CONTENTS
   
@@ -11,6 +11,8 @@
 [WORKFLOW](#WORKFLOW)
 
 [PIPELINE ARCHITECTURE](#PIPELINE_ARCHITECTURE)
+
+[SINGLE-CELL VALIDATION](#SINGLE-CELL_VALIDATION)
 
 [CODE AVAILABILITY](#CODE_AVAILABILITY)
 
@@ -51,6 +53,8 @@ The study characterizes the T-cell marker expression , immune cell abundance and
 
 LUSc samples to delineate the molecular boundaries between these two histologies.
 
+Additionallysingle-cell RNA sequencing data was incorporated to validate immune cell-specific findings at higher resolution
+   
   OBJECTIVES
 
 - Perform intra-group and global audits of LUAD and LUSc transcriptomic data.
@@ -63,7 +67,7 @@ LUSc samples to delineate the molecular boundaries between these two histologies
 
 - Map funtional biological pathways unique to the LUAD and LUSC microenvironments.
 
-
+- Validate bulk RNA-seq findings using single-cell RNA-seq data.
   WORKFLOW
 
 ![RNAseq Workflow](figures/WORKFLOW2.png)
@@ -71,6 +75,49 @@ LUSc samples to delineate the molecular boundaries between these two histologies
   PIPELINE ARCHITECTURE
 
 ![PIPELINE](figures/PIPELINE.png)
+
+  SINGLE-CELL VALIDATION
+To strenghten findings from bulk RNA-seq analysis, single -cell RNA sequencing (scRNA-seq) data was used for validation of T-cell infiltration
+
+and immune activity patterns.
+     DATASET:
+   Validation was performed using publicly available scRNA-seq data fro GEO:
+   
+   -Accession: GSE127465
+
+   -Data type: Single-cell RNA-seq of human lung tumor microenvironment
+    
+   RATIONALE:
+   Bulk RNA-seq provides averaged gene expression across all cells which may obscure cell-specific signals.
+
+   Single-cell RNA-seq allows validation at cellular resolution confirming the presence and activity of specific immune populations.
+
+   APPROACH:
+
+   - Processed scRNA-seq expression matrix and metadata were used
+
+   - T-cell activity was evaluated using marker gene
+
+   - Gene scoring and visualization were performed to identify T-cell populations
+     
+   VALIDATION OUTCOME:
+
+   - confirmed presence of T-cell populations within tumor samples
+
+   - Cytotoxic markers(CD8A, GZMB) indicated active immune response
+
+   - Regulatory markers(FOXP3, PDCD1) suggested immune suppression mechanisms
+   
+   INTERPRETATION:
+   
+   The single-cell analysis supports bulk RNA-seq findings by demonstrating that:
+   
+   -LUAD exhibits higher T-cell activity consistent with an immune "hot" phenotype
+   
+   -LUSc show reduced immune presence consistent with an immune "desert phenotype"
+   
+   This validation strengthens confidence in the observed histological immune differences.
+
 
   CODE AVAILABILITY
 
@@ -128,6 +175,14 @@ ii) Macrophages
 
  LUAD is significantly enriched in pathways related to antigen processing and apoptopic cell clearance. [View LUAD Pathways](figures/pathways_LUAD_High_manual.png)
 
+- Validation of findings:
+
+ Single-cell RNA-seq analysis confirms the presence of T-cell populations and supports the observed immune-active(LUAd) and immune-desert(LUSc) phenotypes.
+  
+  1. T-cell abundance across cell populations supports the observed immune-active(LUAD) and immune-desert(LUSC) phenotypes. [View T-cell Abundance Validation](validation/figures/Tcell_Abundance_Validation_Barplot.png)
+     
+  2. UMAP visualization further highlights clustering of immune cells and spatial distribution of T-cell population accross the dataset. [View UMAP Validation Atlas](validation/figures/umap_Final_validation_Atlas.png)
+
   REPOSITORY STRUCTURE
 
 - Data - raw and audited count matrices(LUAD/LUSC)
@@ -140,7 +195,12 @@ ii) Macrophages
 
 - accessions/ accessions.txt - list of TCGA case IDs and file UUIDs
 
--validation/{data,scripts,results,figures}- directory with single-cell information used in validation 
+-validation/
+   -data - scRNA-seq dataset 
+   -scripts - validation scripts
+   -figures - UMAp and barplot validation plots
+   -results - validation outputs.
+   -README.md - validation documentation
 
 - README.md - general project documentation
 
