@@ -25,5 +25,8 @@ https://portal.gdc.cancer.gov/files/fd713184-4bb4-4e1b-a3b8-636273ee6ccc
 
 VALIDATION DATASETS(scRNA-seq)
 
-https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE131907&format=file&file=GSE131907%5FLung%5FCancer%5Fraw%5FUMI%5Fmatrix%2Etxt%2Egz
-https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE131907&format=file&file=GSE131907%5FLung%5FCancer%5Fcell%5Fannotation%2Etxt%2Egz
+https://ftp.ncbi.nlm.nih.gov/geo/series/GSE127nnn/GSE127465/suppl/GSE127465%5Fgene%5Fnames%5Fhuman%5F41861%2Etsv%2Egz
+
+https://ftp.ncbi.nlm.nih.gov/geo/series/GSE127nnn/GSE127465/suppl/GSE127465%5Fhuman%5Fcell%5Fmetadata%5F54773x25%2Etsv%2Egz
+
+https://ftp.ncbi.nlm.nih.gov/geo/series/GSE127nnn/GSE127465/suppl/GSE127465%5Fhuman%5Fcounts%5Fnormalized%5F54773x41861%2Emtx%2Egz
