@@ -220,6 +220,8 @@ Visualization: Matplotlib, Seaborn, Bioinfokit
 
 APIs: MyGene.info
 
+Single-cell analysis: Scanpy
+
    LICENSE
 
 License : License: MIT
