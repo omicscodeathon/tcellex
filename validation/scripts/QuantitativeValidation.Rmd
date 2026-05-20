@@ -1,0 +1,49 @@
+---
+title: "Tcellex_Validation4"
+author: "Ashita Jawali"
+date: "2026-04-24"
+output: html_document
+---
+
+
+```{r cars}
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+seurat_obj <- readRDS("C:/Users/ashit/Desktop/Research Paper/Tcellex/Validation/final_seurat.rds")
+
+cat("Calculating abundance...\n")
+
+abundance <- seurat_obj@meta.data %>%
+  group_by(histology, `Major.cell.type`) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  pivot_wider(names_from = `Major.cell.type`, values_from = count, values_fill = 0)
+
+# ✅ FIX: ROW-WISE normalization (same as Python)
+abundance_pct <- abundance %>%
+  rowwise() %>%
+  mutate(across(-histology, ~ .x / sum(c_across(-histology)) * 100)) %>%
+  ungroup()
+
+# Robust T-cell detection
+tcell_col <- grep("T.?cell|Lymph", colnames(abundance_pct), ignore.case = TRUE, value = TRUE)[1]
+
+proof_data <- abundance_pct %>%
+  select(histology, all_of(tcell_col)) %>%
+  rename(T_Cell_Percentage = !!tcell_col)
+
+print(proof_data)
+
+ggplot(proof_data, aes(x = histology, y = T_Cell_Percentage, fill = histology)) +
+  geom_bar(stat = "identity", color = "black") +
+  geom_text(aes(label = sprintf("%.1f%%", T_Cell_Percentage)), vjust = -0.5) +
+  scale_fill_manual(values = c("LUAD"="#1f77b4", "LUSC"="#ff7f0e")) +
+  theme_minimal()
+
+ggsave("Tcell_abundance.png", width = 6, height = 5)
+
+cat("SUCCESS\n")
+```
+

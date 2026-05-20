@@ -1,0 +1,88 @@
+---
+title: "Tcellex_Validation1"
+author: "Ashita Jawali"
+date: "2026-04-24"
+output: html_document
+---
+
+## Import necessary Libraries
+
+```{r cars}
+library(Seurat)
+library(Matrix)
+library(data.table)
+```
+
+## Paths
+
+
+```{r pressure, echo=FALSE}
+val_dir <- "C:/Users/ashit/Desktop/Research Paper/Tcellex/Validation"
+
+matrix_path <- file.path(val_dir, "GSE127465_human_counts_normalized_54773x41861.mtx.gz")
+genes_path <- file.path(val_dir, "GSE127465_gene_names_human_41861.tsv.gz")
+metadata_path <- file.path(val_dir, "GSE127465_human_cell_metadata_54773x25.tsv.gz")
+```
+
+
+## Load Matrix
+
+
+```{r pressure, echo=FALSE}
+cat("Stage 1: Building Seurat Object...\n")
+mat <- readMM(matrix_path)
+```
+
+
+## Fix orientation (cells * genes)
+
+```{r pressure, echo=FALSE}
+if (nrow(mat) != 54773) {
+  cat("Transposing matrix...\n")
+  mat <- t(mat)
+}
+```
+
+## Load genes
+
+```{r pressure, echo=FALSE}
+genes <- read.delim(genes_path, header = FALSE)$V1
+genes <- make.unique(as.character(genes))
+```
+
+
+## Assigne gene names
+
+```{r pressure, echo=FALSE}
+colnames(mat) <- genes
+mat <- t(mat)
+```
+
+## Load metadata
+
+```{r pressure, echo=FALSE}
+metadata <- read.table(metadata_path, header = TRUE, sep = "\t")
+```
+
+## Ensure alignment
+
+```{r pressure, echo=FALSE}
+# Create artificial cell IDs
+cell_ids <- paste0("Cell_", seq_len(ncol(mat)))
+
+# Assign to matrix
+colnames(mat) <- cell_ids
+
+# Assign to metadata
+rownames(metadata) <- cell_ids
+
+# Create Seurat object
+seurat_obj <- CreateSeuratObject(counts = mat, meta.data = metadata)
+
+# Save
+saveRDS(seurat_obj,
+        file = file.path("C:/Users/ashit/Desktop/Research Paper/Tcellex/Validation","integrated_seurat.rds"))
+
+
+cat("SUCCESS: Seurat object created\n")
+```

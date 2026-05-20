@@ -1,0 +1,85 @@
+---
+title: "Tcellex_Validation3"
+author: "Ashita Jawali"
+date: "2026-04-24"
+output: html_document
+---
+
+
+```{r cars}
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+
+seurat_obj <- readRDS("C:/Users/ashit/Desktop/Research Paper/Tcellex/Validation/integrated_seurat.rds")
+
+cat("Stage 2: Mapping Histology...\n")
+
+# Map histology
+histology_map <- c(
+  p1="LUAD", p2="LUAD", p3="LUAD",
+  p4="LUSC", p5="LUSC", p6="LUSC", p7="LUSC"
+)
+
+# Histology mapping (SAFE)
+metadata$histology <- histology_map[metadata$Patient]
+seurat_obj@meta.data <- cbind(seurat_obj@meta.data, metadata["histology"])
+
+# QC
+seurat_obj[["percent.mt"]] <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
+seurat_obj <- subset(seurat_obj, subset = nFeature_RNA > 200 & percent.mt < 5)
+
+# Get counts (Seurat v5 fix)
+counts <- GetAssayData(seurat_obj, layer = "counts")
+
+# Normalize like Scanpy
+counts_norm <- t( t(counts) / Matrix::colSums(counts) * 1e4 )
+counts_log <- log1p(counts_norm)
+
+# Set normalized data
+seurat_obj <- SetAssayData(
+  seurat_obj,
+  layer = "data",
+  new.data = counts_log
+)
+
+# Match HVG Selection
+seurat_obj <- FindVariableFeatures(
+  seurat_obj,
+  selection.method = "vst",   # closest to scanpy flavor
+  nfeatures = 2000
+)
+
+# ❗ DO NOT over-scale (Scanpy doesn’t fully center like Seurat)
+seurat_obj <- ScaleData(seurat_obj, do.scale = FALSE)
+
+# -------------------------
+# ✅ MATCH PCA + NEIGHBORS + UMAP
+# -------------------------
+seurat_obj <- RunPCA(seurat_obj, npcs = 50)
+
+seurat_obj <- FindNeighbors(seurat_obj, dims = 1:30)
+
+# Match Scanpy UMAP behavior more closely
+seurat_obj <- RunUMAP(
+  seurat_obj,
+  dims = 1:30,
+  n.neighbors = 15,
+  min.dist = 0.5,
+  metric = "cosine"
+)
+
+# -------------------------
+# Visualization
+# -------------------------
+p1 <- DimPlot(seurat_obj, group.by = "histology")
+p2 <- FeaturePlot(seurat_obj, features = "CD3D")
+
+ggsave("umap_validation.png", p1 + p2, width = 10, height = 5)
+
+saveRDS(seurat_obj,
+        file = "C:/Users/ashit/Desktop/Research Paper/Tcellex/Validation/final_seurat.rds")
+
+cat("SUCCESS\n")
+
+```
