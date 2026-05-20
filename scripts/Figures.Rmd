@@ -1,0 +1,438 @@
+---
+title: "Publication Figures"
+author: "Ashita Jawali"
+date: "2026-05-20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+# CRAN packages
+install.packages(c(
+  "tidyverse",
+  "pheatmap",
+  "ggplot2",
+  "RColorBrewer",
+  "survival",
+  "survminer",
+  "ggpubr",
+  "reshape2",
+  "corrplot",
+  "viridis"
+))
+
+# Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install(c(
+  "ComplexHeatmap",
+  "DESeq2",
+  "edgeR",
+  "limma",
+  "GSVA",
+  "immunedeconv",
+  "PCAtools",
+  "EnhancedVolcano"
+))
+```
+
+## PCA Plots
+
+```{r cars}
+library(PCAtools)
+library(tidyverse)
+
+# Load expression matrix
+expr <- read.csv(
+  "C:/Users/ashit/Desktop/Research Paper/Tcellex/normalized_16_samples.csv",
+  row.names = 1,
+  check.names = FALSE
+)
+
+# IMPORTANT:
+# PCAtools expects:
+# rows = genes
+# columns = samples
+
+# Create metadata
+metadata <- data.frame(
+  Sample = colnames(expr),
+  Group = c(rep("LUAD", 8), rep("LUSC", 8))
+)
+
+rownames(metadata) <- metadata$Sample
+
+# Check matching
+all(colnames(expr) == rownames(metadata))
+
+# Run PCA
+p <- pca(
+  expr,
+  metadata = metadata,
+  removeVar = 0.1
+)
+
+# Plot
+pca_plot <- biplot(
+  p,
+  colby = "Group",
+  shape = "Group",
+  legendPosition = "right",
+  pointSize = 5,
+  lab = colnames(expr)
+) +
+  theme_classic(base_size = 18)
+
+ggsave(
+  "PCA_plot_publication.png",
+  plot = pca_plot,
+  width = 12,
+  height = 10,
+  dpi = 600
+)
+```
+
+## Sample-Level Boxplots
+
+```{r pressure, echo=FALSE}
+library(ggplot2)
+library(reshape2)
+
+# Melt matrix
+df <- melt(as.matrix(combined))
+
+colnames(df) <- c(
+  "Gene",
+  "Sample",
+  "Expression"
+)
+
+# Correct group assignment
+sample_groups <- c(
+  rep("LUAD", ncol(luad_common)),
+  rep("LUSC", ncol(lusc_common))
+)
+
+names(sample_groups) <- colnames(combined)
+
+df$Group <- sample_groups[df$Sample]
+
+# Plot
+ggplot(df,
+       aes(
+         x = Group,
+         y = Expression,
+         fill = Group
+       )) +
+  geom_boxplot(outlier.size = 0.2) +
+  theme_classic(base_size = 14)
+```
+
+
+## Correlation Heatmap
+
+```{r pressure1, echo=FALSE}
+library(pheatmap)
+
+expr <- read.csv("C:/Users/ashit/Desktop/Research Paper/Tcellex/normalized_16_samples.csv", row.names = 1)
+
+cor_matrix <- cor(expr)
+
+pheatmap(
+  cor_matrix,
+  clustering_distance_rows = "euclidean",
+  clustering_distance_cols = "euclidean",
+  color = colorRampPalette(c("blue", "white", "red"))(100)
+)
+```
+
+
+## T-cell Marker Heatmap
+
+```{r pressure2, echo=FALSE}
+library(ComplexHeatmap)
+library(circlize)
+
+markers <- read.csv("C:/Users/ashit/Desktop/Research Paper/Tcellex/tcell_marker_comparison_16.csv", row.names = 1)
+
+mat <- as.matrix(markers)
+
+mat_scaled <- t(scale(t(mat)))
+
+Heatmap(
+  mat_scaled,
+  name = "Expression",
+  cluster_rows = TRUE,
+  cluster_columns = TRUE,
+  col = colorRamp2(c(-2,0,2), c("navy","white","firebrick"))
+)
+```
+
+## GSVA Immune Scoring
+
+```{r pressure3, echo=FALSE}
+library(tidyverse)
+library(GSVA)
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+library(pheatmap)
+library(ggplot2)
+
+# =========================
+# 1. LOAD DATA
+# =========================
+expr <- read.csv(
+  "C:/Users/ashit/Desktop/Research Paper/Tcellex/normalized_16_samples.csv",
+  row.names = 1,
+  check.names = FALSE
+)
+
+# =========================
+# 2. REMOVE QC ROWS
+# =========================
+expr <- expr[!rownames(expr) %in% c(
+  "N_unmapped",
+  "N_multimapping",
+  "N_noFeature",
+  "N_ambiguous"
+), ]
+
+# =========================
+# 3. ENSG CLEANUP
+# =========================
+gene_ids <- gsub("\\..*", "", rownames(expr))
+
+# =========================
+# 4. MAP ENSG -> SYMBOL
+# =========================
+symbols <- mapIds(
+  org.Hs.eg.db,
+  keys = gene_ids,
+  column = "SYMBOL",
+  keytype = "ENSEMBL",
+  multiVals = "first"
+)
+
+expr$SYMBOL <- symbols
+
+# remove unmapped genes
+expr <- expr[!is.na(expr$SYMBOL), ]
+
+# =========================
+# 5. COLLAPSE DUPLICATES
+# =========================
+expr <- expr %>%
+  group_by(SYMBOL) %>%
+  summarise(across(where(is.numeric), mean))
+
+expr <- as.data.frame(expr)
+rownames(expr) <- expr$SYMBOL
+expr$SYMBOL <- NULL
+
+# =========================
+# 6. FINAL MATRIX
+# =========================
+expr_matrix <- as.matrix(expr)
+
+# =========================
+# 7. CHECK SIGNATURE MATCH
+# =========================
+signature <- c("CD3D","CD3E","CD8A","CD8B","GZMB")
+
+print(signature %in% rownames(expr_matrix))
+
+# =========================
+# 8. GSVA (ssGSEA)
+# =========================
+gene_set <- list(Tcell = signature)
+
+param <- ssgseaParam(
+  exprData = expr_matrix,
+  geneSets = gene_set
+)
+
+gsva_scores <- gsva(param)
+
+print(gsva_scores)
+
+
+# =========================
+# 10. BARPLOT
+# =========================
+scores_df <- data.frame(
+  Sample = colnames(gsva_scores),
+  Score = as.numeric(gsva_scores[1, ])
+)
+
+ggplot(scores_df, aes(x = Sample, y = Score)) +
+  geom_bar(stat = "identity") +
+  theme_classic(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "T-cell Infiltration Score (ssGSEA)",
+       x = "Sample",
+       y = "Score")
+```
+
+## Immune Cell Deconvolution
+
+```{r pressure4, echo=FALSE}
+library(dplyr)
+library(immunedeconv)
+
+expr <- read.csv(
+  "C:/Users/ashit/Desktop/Research Paper/Tcellex/normalized_16_samples.csv",
+  row.names = 1,
+  check.names = FALSE
+)
+
+# Remove QC rows
+expr <- expr[!rownames(expr) %in% c(
+  "N_unmapped",
+  "N_multimapping",
+  "N_noFeature",
+  "N_ambiguous"
+), ]
+
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+
+gene_ids <- gsub("\\..*", "", rownames(expr))
+
+symbols <- mapIds(
+  org.Hs.eg.db,
+  keys = gene_ids,
+  column = "SYMBOL",
+  keytype = "ENSEMBL",
+  multiVals = "first"
+)
+
+expr$SYMBOL <- symbols
+
+expr <- expr[!is.na(expr$SYMBOL), ]
+
+expr <- expr %>%
+  group_by(SYMBOL) %>%
+  summarise(across(where(is.numeric), mean))
+
+expr <- as.data.frame(expr)
+rownames(expr) <- expr$SYMBOL
+expr$SYMBOL <- NULL
+
+head(rownames(expr))
+
+library(immunedeconv)
+
+# Set method
+library(immunedeconv)
+
+result <- deconvolute(
+  expr,
+  method = "quantiseq"
+)
+
+write.csv(result, "immune_deconvolution_results.csv")
+```
+
+## Immune Infiltration Heatmap
+
+```{r pressure5, echo=FALSE}
+immune <- read.csv(
+  "immune_deconvolution_results.csv",
+  row.names = 1,
+  check.names = FALSE
+)
+
+immune_mat <- as.matrix(immune)
+mode(immune_mat) <- "numeric"
+
+immune_mat[!is.finite(immune_mat)] <- 0
+immune_mat <- immune_mat[complete.cases(immune_mat), ]
+immune_mat <- immune_mat[apply(immune_mat, 1, var) > 0, ]
+
+dim(immune_mat)
+
+library(pheatmap)
+
+library(pheatmap)
+
+pheatmap(
+  immune_mat,
+  scale = "row",
+  clustering_method = "ward.D2",
+  fontsize = 10
+)
+```
+
+## TIDE-Style Dysfunction/Exclusion Scoring
+
+```{r pressure6, echo=FALSE}
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+library(dplyr)
+library(ggplot2)
+
+expr <- read.csv(
+  "C:/Users/ashit/Desktop/Research Paper/Tcellex/normalized_16_samples.csv",
+  row.names = 1,
+  check.names = FALSE
+)
+
+# remove QC rows
+expr <- expr[!rownames(expr) %in% c(
+  "N_unmapped",
+  "N_multimapping",
+  "N_noFeature",
+  "N_ambiguous"
+), ]
+
+gene_ids <- gsub("\\..*", "", rownames(expr))
+
+symbols <- mapIds(
+  org.Hs.eg.db,
+  keys = gene_ids,
+  column = "SYMBOL",
+  keytype = "ENSEMBL",
+  multiVals = "first"
+)
+
+expr$SYMBOL <- symbols
+expr <- expr[!is.na(expr$SYMBOL), ]
+
+expr <- expr %>%
+  group_by(SYMBOL) %>%
+  summarise(across(where(is.numeric), mean))
+
+expr <- as.data.frame(expr)
+rownames(expr) <- expr$SYMBOL
+expr$SYMBOL <- NULL
+
+# Step 2
+exhaustion_genes <- c("PDCD1","CTLA4","LAG3","HAVCR2","TIGIT")
+
+exhaustion_genes %in% rownames(expr)
+
+#Step 3
+exhaustion_mat <- expr[exhaustion_genes, , drop = FALSE]
+
+exhaustion_score <- colMeans(exhaustion_mat, na.rm = TRUE)
+
+# Step 4
+scores <- data.frame(
+  Sample = colnames(expr),
+  ExhaustionScore = as.numeric(exhaustion_score)
+)
+
+#Step 5
+ggplot(scores, aes(x = Sample, y = ExhaustionScore)) +
+  geom_bar(stat = "identity") +
+  theme_classic(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "T-cell Exhaustion Score (TIDE-like)")
+
+```
+
