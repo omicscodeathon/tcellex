@@ -70,7 +70,7 @@ Additionallysingle-cell RNA sequencing data was incorporated to validate immune 
 - Validate bulk RNA-seq findings using single-cell RNA-seq data.
   WORKFLOW
 
-![RNAseq Workflow](figures/WORKFLOW2.png)
+![RNAseq Workflow](figures/TCellex_Workflow.png)
 
   PIPELINE ARCHITECTURE
 
