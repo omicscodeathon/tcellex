@@ -228,31 +228,32 @@ License : License: MIT
 
   CONTRIBUTORS
 
-1. Mbaoji Florence Nwakaego
-  Department of Pharmacology and Toxicology,
-  Faculty of Pharmaceutical Sciences,
-  University of Nigeria Nsukka,  Nsukka,  Enugu State, Nigeria
-
-2. Chemutai Queen
+1. Chemutai Queen
   Department of Biochemistry,
   Faculty of Biomedical sciences,
   Jomo Kenyatta University of Agriculture and Technology, Kenya
 
-3. John Nnaemeka Nkwocha
+2. Ashita Jawali
+   Molecular Diagnostic Department,
+   Kansas Department of Health and Environment,
+   Kansas, United States
+
+3. Mbaoji Florence Nwakaego
+  Department of Pharmacology and Toxicology,
+  Faculty of Pharmaceutical Sciences,
+  University of Nigeria Nsukka,  Nsukka,  Enugu State, Nigeria
+
+4. John Nnaemeka Nkwocha
   Department of Biochemistry,
   University of Port Harcourt, Choba, River State, Nigeria.
 
-4. Usman Yalwa.
+5. Usman Yalwa.
   MSc Bioinformatics student at Kalinga University, India
 
-5. Mark Matthew Edet
+6. Mark Matthew Edet
   Department of Morphological Veterinary Medicine, Chungbuk National University, South Korea.
   Department of Human Biochemistry, Faculty of Basic Medical Sciences,
   Nnamdi Azikiwe University, Nnewi, Nigeria.
-
-6. Zilungile Coki
-   SSc(HONS) Biotechnology student,
-   University of the Western Cape, South Africa
 
 7. Oluwaseun Martins Olowabi.
    Cancer Research and Molecular Biology,
