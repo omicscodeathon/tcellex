@@ -35,7 +35,7 @@ COMPARATIVE TRANSCRIPTOMIC ANALYSIS OF NON-SMALL CELL LUNG CANCER LUAD AND LUSC 
                             omics codeathon general application 2026
         organized by the African Society for Bioinformatics and Computational Biology(ASBCB) with support from the NIH office of Data Science Strategy.
    
-BACKGROUND
+## BACKGROUND
 
 Non-Small Cell lung cancer(NSCLC) is primarily categorized into two histological subtypes the Lung Adenocarcinoma(LUAD)
 
@@ -45,7 +45,7 @@ different. Understanding the histological drivers of T-cell exclusion is critica
 
  and understanding why certain tumors present as immune deserts.
 
-  PROJECT OVERVIEW
+## PROJECT OVERVIEW
 
 This project performs a comparative transcriptomic analysis of 16 high-throughput datasets from The Cancer Genome Atlas(TCGA)
 
@@ -55,7 +55,7 @@ LUSc samples to delineate the molecular boundaries between these two histologies
 
 Additionallysingle-cell RNA sequencing data was incorporated to validate immune cell-specific findings at higher resolution
    
-  OBJECTIVES
+## OBJECTIVES
 
 - Perform intra-group and global audits of LUAD and LUSc transcriptomic data.
 
@@ -72,27 +72,27 @@ Additionallysingle-cell RNA sequencing data was incorporated to validate immune 
 
 ![RNAseq Workflow](figures/TCellex_Workflow.png)
 
-  PIPELINE ARCHITECTURE
+ ## PIPELINE ARCHITECTURE
 
 ![PIPELINE](figures/PIPELINE.png)
 
-  SINGLE-CELL VALIDATION
+##  SINGLE-CELL VALIDATION
 To strenghten findings from bulk RNA-seq analysis, single -cell RNA sequencing (scRNA-seq) data was used for validation of T-cell infiltration
 
 and immune activity patterns.
-     DATASET:
+##   DATASET:
    Validation was performed using publicly available scRNA-seq data fro GEO:
    
    -Accession: GSE127465
 
    -Data type: Single-cell RNA-seq of human lung tumor microenvironment
     
-   RATIONALE:
+##  RATIONALE:
    Bulk RNA-seq provides averaged gene expression across all cells which may obscure cell-specific signals.
 
    Single-cell RNA-seq allows validation at cellular resolution confirming the presence and activity of specific immune populations.
 
-   APPROACH:
+ ##  APPROACH:
 
    - Processed scRNA-seq expression matrix and metadata were used
 
@@ -100,7 +100,7 @@ and immune activity patterns.
 
    - Gene scoring and visualization were performed to identify T-cell populations
      
-   VALIDATION OUTCOME:
+  ## VALIDATION OUTCOME:
 
    - confirmed presence of T-cell populations within tumor samples
 
@@ -108,7 +108,7 @@ and immune activity patterns.
 
    - Regulatory markers(FOXP3, PDCD1) suggested immune suppression mechanisms
    
-   INTERPRETATION:
+ ##  INTERPRETATION:
    
    The single-cell analysis supports bulk RNA-seq findings by demonstrating that:
    
@@ -119,13 +119,13 @@ and immune activity patterns.
    This validation strengthens confidence in the observed histological immune differences.
 
 
-  CODE AVAILABILITY
+##  CODE AVAILABILITY
 
 All the scripts(python) for the T-cell project are available in the repository:
 
 👉 Browse the scripts: [View scripts](scripts)
 
-  T-CELL LINEAGE USED:
+##  T-CELL LINEAGE USED:
 
 - Core T-cell populations:
 
@@ -183,7 +183,7 @@ ii) Macrophages
      
   2. UMAP visualization further highlights clustering of immune cells and spatial distribution of T-cell population accross the dataset. [View UMAP Validation Atlas](validation/figures/umap_Final_validation_Atlas.png)
 
-  REPOSITORY STRUCTURE
+##  REPOSITORY STRUCTURE
 
 - Data - raw and audited count matrices(LUAD/LUSC)
 
@@ -208,7 +208,7 @@ ii) Macrophages
 
 - license - MIT license
 
-  TOOLS & SOFTWARE
+##  TOOLS & SOFTWARE
 
 Language: Python 3.10+
 
@@ -222,11 +222,11 @@ APIs: MyGene.info
 
 Single-cell analysis: Scanpy
 
-   LICENSE
+##  LICENSE
 
 License : License: MIT
 
-  CONTRIBUTORS
+##  CONTRIBUTORS
 
 1. Chemutai Queen
   Department of Biochemistry,
@@ -271,7 +271,7 @@ License : License: MIT
    African Society for Bioinformatics and Computational Biology (ASBCB), Cape Town, South Africa
   Project Advisor
   
-  ACKNOWLEDGEMENTS
+##  ACKNOWLEDGEMENTS
 
 We thank the NIH Office of Data Science Strategy for their support before and during the October 2026 Omics Codeathon, co-organized with the African Society for Bioinformatics and Com>
 We also thank Dr. Awe for his ongoing guidance and all collaborators who contributed to this project.
